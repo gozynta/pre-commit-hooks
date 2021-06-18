@@ -1,3 +1,5 @@
 include:
   - project: 'gozynta/gcloud-tagging-docker'
     file: '/gitlab-ci-template.yml'
+variables:
+  PYTHON_VERSION: '3.9'

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Exit script on first failure.
+set -e
+
+# Echo commands to stdout.
+set -x
+
+# Exit on unset variable.
+set -u
+
+./dev-scripts/check-trailing-whitespace
+./dev-scripts/check-trailing-newline
+
+# Only run python build if there's python code
+if [[ -d ./pysrc ]] ; then
+    pipenv run python ./dev-scripts/build-python.py
+fi

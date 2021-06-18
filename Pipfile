@@ -9,8 +9,14 @@ python_version = "3.9"
 [packages]
 
 [dev-packages]
-pytest = "*"
+PyYAML = "*"
+black = "==21.6b0"
+coverage = "*"
 flake8 = "*"
+isort = "*"
+pipfile = "*"
+pytest = "*"
 pytest-flake8 = "*"
 pytest-isort = "*"
-isort = "*"
+python-dotenv = "*"
+sh = "*"

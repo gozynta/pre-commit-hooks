@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Run this to enable all git hooks for this project.
+
+# Exit script on first failure.
+set -e
+
+# Echo commands to stdout.
+set -x
+
+# Exit on unset variable.
+set -u
+
+# Save this script's directory to a variable
+readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+# Change directory to repository root.
+cd "${SCRIPT_DIR}/.."
+
+# If there's an existing symlink, remove it.
+if [[ -L .git/hooks ]] ; then
+  rm .git/hooks
+fi
+
+# If it's a regular directory, move out of the way.
+if [[ -d .git/hooks ]] ; then
+  rm -rf .git/hooks.bak
+  mv .git/hooks .git/hooks.bak
+fi
+
+ln --symbolic --force ../dev-scripts/git-hooks .git/hooks
