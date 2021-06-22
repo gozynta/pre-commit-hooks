@@ -2,7 +2,7 @@ import os
 import sys
 
 import pipfile
-import sh  # Run build commands from the shell even though we could hook into their python APIs since this will lead to more consistency with what's being run in the CI
+import sh
 import yaml
 from dotenv import load_dotenv
 
@@ -10,13 +10,18 @@ load_dotenv()
 
 
 def run_command(*args):
-    # Want to print the commmand before running it, like `set -x`.  This is very niave, but at least gets the idea across.  A more accurate command line will be printed if a command fails.
+    """
+    Run build commands from the shell even though we could hook into their python APIs since this will lead to more
+    consistency with what's being run in the CI"""
+
+    # Want to print the commmand before running it, like `set -x`.  This is very niave, but at least gets the idea
+    # across.  A more accurate command line will be printed if a command fails.
     print(f'+ {" ".join(args)}')
     try:
         sh.Command(args[0])(args[1:], _fg=True)
     except sh.ErrorReturnCode as err:
         print(f"`{err.full_cmd}` failed")
-        sys.exit(err.exit_code)
+        sys.exit(err.exit_code)  # type: ignore
 
 
 # Start with checking our build scripts
@@ -48,7 +53,8 @@ assert python_version == gitlab_variables["PYTHON_VERSION"]
 
 run_command("bash", "-c", "echo $PYTHON_PATH")
 
-# TODO: This isn't very DRY, since we're having to define the same default variables and commands both here and in https://gitlab.com/gozynta/gcloud-tagging-docker/-/blob/master/gitlab-ci-template.yml
+# TODO: This isn't very DRY, since we're having to define the same default variables and commands both here and in
+# https://gitlab.com/gozynta/gcloud-tagging-docker/-/blob/master/gitlab-ci-template.yml
 run_command("isort", "-c", source_dir)
 run_command("black", "--check", "--diff", "--color", source_dir)
 
