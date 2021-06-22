@@ -1,10 +1,9 @@
-# If you change this file, consider whether your changes should also go into .dockerignore.
-# Since our Dockerfile runs the builds in the CI, and wouldn't have access to any files ignored here then the
-# .dockerignore should probably be a superset of .gitignore.  Files like Pipfile.lock that are built by a preceding
-# build step in CI are the exception.
+/.*
 
-## Project specific gitignore entries go here:
+# Git merge/rebase remnants
+*.orig
 
+dev-scripts
 
 ## From: https://github.com/github/gitignore/blob/master/Python.gitignore (updated 2021-07-18)
 # Byte-compiled / optimized / DLL files
@@ -101,7 +100,7 @@ ipython_config.py
 #   However, in case of collaboration, if having platform-specific dependencies or dependencies
 #   having no cross-platform support, pipenv may install dependencies that don't work, or not
 #   install all needed dependencies.
-Pipfile.lock
+# Pipfile.lock
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pypackages__/
@@ -146,3 +145,4 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 ## End Python.gitignore
+
