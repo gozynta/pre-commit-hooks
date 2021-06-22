@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec pipenv run `basename $0` $@
