@@ -13,13 +13,13 @@ Specifically:
 ## Dev Prerequisites
 - python 3.9
 - pipenv
-- (optional) VSCode with `ms-python.python` and `ms-python.vscode-pylance` extensions installed
+- (optional) VSCode with `editorconfig.editorconfig`, `ms-python.python`, and `ms-python.vscode-pylance` extensions installed
 
 ## Dev Installation
 
 ```bash
 pipenv install -d
-./dev-scripts/enable-git-hooks
+./dev-scripts/install
 ```
 
 ## Usage for a new project

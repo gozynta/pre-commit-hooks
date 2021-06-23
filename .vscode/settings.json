@@ -1,14 +1,11 @@
 {
-    "python.testing.pytestEnabled": true,
-    "python.workspaceSymbols.enabled": true,
-    "python.formatting.provider": "black",
-    "python.formatting.blackPath": "${workspaceFolder}/dev-scripts/pipenv_shims/black",
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": true
-    },
-    "python.defaultInterpreterPath": "${workspaceFolder}/dev-scripts/pipenv_shims/python",
-    "python.linting.flake8Enabled": true,
-    "python.linting.flake8Path": "${workspaceFolder}/dev-scripts/pipenv_shims/flake8",
-    "python.testing.pytestPath": "${workspaceFolder}/dev-scripts/pipenv_shims/pytest",
-    "python.pythonPath": "dev-scripts/pipenv_shims/python"
-  }
+  "python.testing.pytestEnabled": true,
+  "python.workspaceSymbols.enabled": true,
+  "python.formatting.provider": "black",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "python.linting.flake8Enabled": true,
+  "python.envFile": "${workspaceFolder}/.vscode/env",
+  "python.pythonPath": ".venv/bin/python"
+}

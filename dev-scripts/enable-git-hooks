@@ -5,11 +5,11 @@
 # Exit script on first failure.
 set -e
 
-# Echo commands to stdout.
-set -x
-
 # Exit on unset variable.
 set -u
+
+# Echo commands to stdout.
+set -x
 
 # Save this script's directory to a variable
 readonly SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
