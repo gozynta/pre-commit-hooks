@@ -11,4 +11,7 @@ set -u
 # Echo commands to stdout.
 set -x
 
-ln -s `pipenv --venv` .venv
+# Link .venv unless user has already set pipenv to use project directory.
+set +u
+[ -z "{PIPENV_VENV_IN_PROJECT}" ] && ln -s `pipenv --venv` .venv
+set -u
