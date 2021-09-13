@@ -5,13 +5,8 @@
 # Exit script on first failure.
 set -e
 
-# Exit on unset variable.
-set -u
-
 # Echo commands to stdout.
 set -x
 
 # Link .venv unless user has already set pipenv to use project directory.
-set +u
-[ -z "{PIPENV_VENV_IN_PROJECT}" ] && ln -s `pipenv --venv` .venv
-set -u
+[ -z "${PIPENV_VENV_IN_PROJECT}" ] && ln -s `pipenv --venv` .venv
