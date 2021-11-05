@@ -1,16 +1,13 @@
-from python:3.9
+from python:3.9-alpine
 
-ENV DEBIAN_FRONTEND noninteractive
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
-RUN adduser --disabled-password --gecos '' worker
+RUN adduser -D -g '' worker
 
 RUN set -ex \
   && mkdir -p /srv \
-#  && apt-get update \
-#  && apt-get install --no-install-recommends -y <put apt packages here \
-#  && apt-get clean \
-#  && rm -rf /var/lib/apt/lists/* \
+#  && apk update \
+#  && apk add --no-cache <put alpine packages here> \
   && pip install --upgrade pip \
   && pip install pipenv \
   && rm -rf ~/.cache
