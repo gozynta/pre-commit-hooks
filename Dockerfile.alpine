@@ -8,9 +8,8 @@ RUN set -ex \
   && mkdir -p /srv \
 #  && apk update \
 #  && apk add --no-cache <put alpine packages here> \
-  && pip install --upgrade pip \
-  && pip install pipenv \
-  && rm -rf ~/.cache
+  && pip install --no-cache-dir --upgrade pip \
+  && pip install --no-cache-dir pipenv
 
 WORKDIR /srv
 
@@ -31,4 +30,4 @@ COPY pysrc pysrc
 # Run as non-root user
 USER worker
 
-ENTRYPOINT python pysrc/fizzbuzz.py
+ENTRYPOINT ["python", "pysrc/fizzbuzz.py"]
