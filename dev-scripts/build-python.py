@@ -57,9 +57,7 @@ run_command("bash", "-c", "echo $PYTHON_PATH")
 # https://gitlab.com/gozynta/gcloud-tagging-docker/-/blob/master/gitlab-ci-template.yml
 run_command("isort", "-c", source_dir)
 run_command("black", "--check", "--diff", "--color", source_dir)
-
-# Lint source only (Uses pytest-isort and pytest-flake8)
-run_command("pytest", source_dir, "--ignore", test_dir)
+run_command("flake8", source_dir, test_dir)
 
 # Run tests under coverage
 run_command("coverage", "run", f"--source={source_dir}", "-m", "pytest", test_dir)
