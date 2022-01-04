@@ -3,7 +3,9 @@
 # Git merge/rebase remnants
 *.orig
 
-dev-scripts
+# Don't need our git stuff in docker, these just slow image building
+.git
+/dev-scripts
 
 ## From: https://github.com/github/gitignore/blob/master/Python.gitignore (updated 2021-07-18)
 # Byte-compiled / optimized / DLL files
