@@ -55,8 +55,8 @@ run_command("bash", "-c", "echo $PYTHON_PATH")
 
 # TODO: This isn't very DRY, since we're having to define the same default variables and commands both here and in
 # https://gitlab.com/gozynta/gcloud-tagging-docker/-/blob/master/gitlab-ci-template.yml
-run_command("isort", "-c", source_dir)
-run_command("black", "--check", "--diff", "--color", source_dir)
+run_command("isort", "-c", source_dir, test_dir)
+run_command("black", "--check", "--diff", "--color", source_dir, test_dir)
 run_command("flake8", source_dir, test_dir)
 
 # Run tests under coverage

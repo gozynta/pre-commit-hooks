@@ -40,6 +40,7 @@ https://docs.pytest.org/en/6.2.x/goodpractices.html#tests-outside-application-co
 https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure
 
 Your project should be setup like this:
+(the ony .py files that should be directly in pysrc/ are scripts that are run but never imported)
 ```
 pysrc/
     main.py
