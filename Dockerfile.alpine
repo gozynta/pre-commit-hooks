@@ -18,7 +18,11 @@ WORKDIR /srv
 COPY Pipfile Pipfile
 COPY Pipfile.lock Pipfile.lock
 RUN set -ex \
+  # Temporarily install build deps for packages with C code
+  # && apk add --no-cache --virtual .build-deps gcc libc-dev make \
   && pipenv install --deploy --system \
+  # Remove build deps to keep container size small
+  # && apk del .build-deps \
   && rm -rf ~/.cache
 
 # Not a bad idea to keep the copyright with the code
