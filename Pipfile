@@ -10,7 +10,7 @@ python_version = "3.9"
 
 [dev-packages]
 PyYAML = "*"
-black = "==21.10b0"
+black = "==21.12b0"
 coverage = "*"
 flake8 = "*"
 isort = "*"
