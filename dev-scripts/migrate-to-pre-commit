@@ -22,10 +22,4 @@ if [[ -L .git/hooks ]] ; then
   rm .git/hooks
 fi
 
-# If it's a regular directory, move out of the way.
-if [[ -d .git/hooks ]] ; then
-  rm -rf .git/hooks.bak
-  mv .git/hooks .git/hooks.bak
-fi
-
-ln --symbolic --force ../dev-scripts/git-hooks .git/hooks
+pipenv run pre-commit install --install-hooks

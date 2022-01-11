@@ -1,0 +1,55 @@
+repos:
+  - repo: local
+    hooks:
+      - id: check-python-versions-match
+        name: Check that python versions match
+        language: python
+        entry: dev-scripts/check-python-versions-match.py
+        additional_dependencies:
+          - "PyYAML"
+          - "pipfile"
+          - "typer"
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+    - id: pretty-format-json
+      exclude: ^Pipfile.lock$
+      args:
+        - "--autofix"
+    - id: check-json
+    - id: check-yaml
+      args:
+        - "--allow-multiple-documents"
+    - id: check-merge-conflict
+    - id: detect-private-key
+    - id: destroyed-symlinks
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
+    - id: mixed-line-ending
+    - id: no-commit-to-branch
+  - repo: https://github.com/asottile/yesqa
+    rev: v1.3.0
+    hooks:
+      - id: yesqa
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.9.0
+    hooks:
+      - id: python-check-blanket-noqa
+      - id: python-check-blanket-type-ignore
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+  - repo: https://github.com/psf/black
+    rev: 21.12b0
+    hooks:
+    - id: black
+  - repo: https://github.com/PyCQA/flake8
+    rev: 4.0.1
+    hooks:
+    - id: flake8
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.1
+    hooks:
+    - id: bandit
+      exclude: '^pytests/'

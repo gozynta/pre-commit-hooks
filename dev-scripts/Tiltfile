@@ -3,21 +3,23 @@ disable_snapshots()
 
 local_resource('pipenv', 'pipenv install -d', deps=['Pipfile'])
 
-def all_pysrc_py_files():
-    return str(local('find pysrc/ -type f -name "*.py"', dir='..')).strip().split('\n')
+PROJECT_ROOT = '..'
 
-def all_pytest_py_files():
-    return str(local('find pytests/ -type f -name "*.py"', dir='..')).strip().split('\n')
+def all_pysrc_py_files(project_root):
+    return str(local('find pysrc/ -type f -name "*.py"', dir=project_root)).strip().split('\n')
 
-def all_git_files():
-    return str(local('git ls-files ..')).strip().split('\n')
+def all_pytest_py_files(project_root):
+    return str(local('find pytests/ -type f -name "*.py"', dir=project_root)).strip().split('\n')
+
+def all_git_files(project_root):
+    return str(local('git ls-files', dir=project_root)).strip().split('\n')
 
 # Run tests
 test(
     'pytest',
     'pipenv run coverage run --source=pysrc -m pytest',
     dir='..',
-    deps=all_pysrc_py_files()+all_pytest_py_files(),
+    deps=all_pysrc_py_files(PROJECT_ROOT)+all_pytest_py_files(PROJECT_ROOT),
     resource_deps=['pipenv'],
     labels=['test'],
     )
@@ -25,7 +27,7 @@ test(
     'coverage',
     'pipenv run coverage report -m',
     dir='..',
-    deps=all_pysrc_py_files()+all_pytest_py_files(),
+    deps=all_pysrc_py_files(PROJECT_ROOT)+all_pytest_py_files(PROJECT_ROOT),
     resource_deps=['pytest'],
     labels=['test'],
     )
@@ -33,7 +35,7 @@ test(
     'pre-commit',
     'pipenv run pre-commit run --all-files --color always',
     dir='..',
-    deps=all_git_files(),
+    deps=all_git_files(PROJECT_ROOT),
     resource_deps=['pipenv'],
     labels=['test'],
 )

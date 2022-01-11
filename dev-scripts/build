@@ -9,10 +9,5 @@ set -u
 # Echo commands to stdout.
 set -x
 
-./dev-scripts/check-trailing-whitespace
-./dev-scripts/check-trailing-newline
-
-# Only run python build if there's python code
-if [[ -d ./pysrc ]] ; then
-    pipenv run python ./dev-scripts/build-python.py
-fi
+# The old build script is dead, long live pre-commit (or not, if something better comes along)
+./dev-scripts/migrate-to-pre-commit
