@@ -5,20 +5,32 @@ local_resource('pipenv', 'pipenv install -d', deps=['Pipfile'])
 
 PROJECT_ROOT = '..'
 
+def get_filelist_from_command(command, working_dir=PROJECT_ROOT, file_separator='\n'):
+    out = str(local(command, dir=working_dir))
+
+    # Strip whitespace and file_separator so we don't end up with a '' entry which will
+    # end up resolving to working_dir.
+    out = out.strip('\r\n \t\0' + file_separator)
+
+    relpath_files =  out.split(file_separator)
+
+    # make filenames absolute paths
+    return [ os.path.join(os.path.abspath(working_dir), f) for f in relpath_files ]
+
 def all_pysrc_py_files(project_root):
-    return str(local('find pysrc/ -type f -name "*.py"', dir=project_root)).strip().split('\n')
+    return get_filelist_from_command('find pysrc/ -type f -name "*.py"', project_root)
 
 def all_pytest_py_files(project_root):
-    return str(local('find pytests/ -type f -name "*.py"', dir=project_root)).strip().split('\n')
+    return get_filelist_from_command('find pytests/ -type f -name "*.py" -print0', project_root, '\0')
 
 def all_git_files(project_root):
-    return str(local('git ls-files', dir=project_root)).strip().split('\n')
+    return get_filelist_from_command('git ls-files -z', project_root, '\0')
 
 # Run tests
 test(
     'pytest',
     'pipenv run coverage run --source=pysrc -m pytest',
-    dir='..',
+    dir=PROJECT_ROOT,
     deps=all_pysrc_py_files(PROJECT_ROOT)+all_pytest_py_files(PROJECT_ROOT),
     resource_deps=['pipenv'],
     labels=['test'],
@@ -26,7 +38,7 @@ test(
 test(
     'coverage',
     'pipenv run coverage report -m',
-    dir='..',
+    dir=PROJECT_ROOT,
     deps=all_pysrc_py_files(PROJECT_ROOT)+all_pytest_py_files(PROJECT_ROOT),
     resource_deps=['pytest'],
     labels=['test'],
@@ -34,7 +46,7 @@ test(
 test(
     'pre-commit',
     'pipenv run pre-commit run --all-files --color always',
-    dir='..',
+    dir=PROJECT_ROOT,
     deps=all_git_files(PROJECT_ROOT),
     resource_deps=['pipenv'],
     labels=['test'],
