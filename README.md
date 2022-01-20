@@ -33,6 +33,15 @@ pipenv install -d
 7. Later, when there are updates to this project you can pull changes from the `boilerplate` remote to get the updates.
    - There will surely be merge conflicts, especially if this file has changed, but I think this will be an ok process overall for keeping these base files up to date?
 
+## Updating an existing project
+1. Make sure this repo is set up as a remote:
+    `bash -c '(git remote |grep boilerplate) || git remote add boilerplate "git@gitlab.com:gozynta/boilerplate.git"'`
+2. Update the remote
+    `git fetch --all`
+3. Pull changes from this repo. (Note: This is the exception to our usual rule of "no merge commits".  That ensures that projects using this repo will keep track of what changes from here have/haven't been merged.  Rebasing your project on this repo would be a big mess, and cherry-picking commits from here is very error-prone: manual, unclear what was picked before, and still requires fixing merge conflicts).
+    `git pull --rebase=false boilerplate main`
+4. Push your branch, etc as usual.  Just don't do a rebase on your branch and make sure Gitlab doesn't squash your commits.
+
 ## Notes on project structure.
 
 The pysrc/pytest structure is based on these recommendations:
