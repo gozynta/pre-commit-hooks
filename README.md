@@ -12,14 +12,38 @@ Specifically:
 
 ## Dev Prerequisites
 - python 3.9
-- pipenv
+- poetry (although pipenv will still work too)
 - (optional) VSCode with `editorconfig.editorconfig`, `ms-python.python`, and `ms-python.vscode-pylance` extensions installed
 
 ## Dev Installation
 
 ```bash
-pipenv install -d
+poetry install
 ./dev-scripts/install
+```
+
+## Converting your project from pipenv to poetry
+
+```bash
+# Review the pyproject.toml, make sure it contains all the boilerplate from this project
+#   Update name, version, and packages
+
+# Install Poetry and pipenv-poetry-migrate if you don't have them
+sudo apt install pipx
+pipx install "poetry>=1.2.0a2"
+pipx install pipenv-poetry-migrate
+
+# Convert dependencies
+pipenv-poetry-migrate -f Pipfile -t pyproject.toml
+
+# Cleanup
+rm .venv
+pipenv --rm
+poetry remove -D pipfile
+rm Pipfile Pipfile.lock
+
+# Generate poetry.lock
+poetry lock
 ```
 
 ## Usage for a new project
@@ -67,5 +91,5 @@ pysrc/
 ## Run
 
 ```bash
-pipenv run ./pysrc/fizzbuzz.py
+poetry run ./pysrc/fizzbuzz
 ```

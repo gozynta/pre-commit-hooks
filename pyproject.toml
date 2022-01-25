@@ -1,3 +1,31 @@
 [tool.black]
 line-length = 119
 experimental_string_processing = true
+
+[tool.poetry]
+name = "boilerplate"
+version = "0.0.0"
+description = ""
+authors = ["Gozynta <support@gozynta.com>"]
+license = "Proprietary"
+readme = "README.md"
+packages = [{include = "fizzbuzz", from="pysrc"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+PyYAML = "*"
+black = "^21.12b0"
+coverage = "*"
+flake8 = "*"
+isort = "*"
+pre-commit = "*"
+pytest = "*"
+python-dotenv = "*"
+sh = "*"
+typer = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

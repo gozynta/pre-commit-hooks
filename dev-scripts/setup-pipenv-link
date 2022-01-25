@@ -9,4 +9,4 @@ set -e
 set -x
 
 # Link .venv unless user has already set pipenv to use project directory.
-[ -z "${PIPENV_VENV_IN_PROJECT}" ] && ln -s `pipenv --venv` .venv
+[ -f "Pipfile" ] && [ -z "${PIPENV_VENV_IN_PROJECT}" ] && [ ! -e .venv ] && ln -s `pipenv --venv` .venv
