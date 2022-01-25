@@ -25,11 +25,13 @@ pipenv install -d
 ## Usage for a new project
 
 1. Clone this repo.  Rename the `origin` remote to `boilerplate`, and make your new Gitlab project your origin.
+   `git remote rename origin boilerplate`
 2. Rename pysrc/fizzbuzz.py to suit your project and start coding/testing
 3. Consider adding Pipfile.lock to the .gitignore (IE: if you're building a shared library)
 4. Create symlink to one of the Dockerfiles (Ex: `ln -s Dockerfile.alpine Dockerfile`)
 5. Update this file
 6. Push to a new Gitlab project
+   `git remote add origin <url> && git push -u origin main`
 7. Later, when there are updates to this project you can pull changes from the `boilerplate` remote to get the updates.
    - There will surely be merge conflicts, especially if this file has changed, but I think this will be an ok process overall for keeping these base files up to date?
 
