@@ -44,6 +44,8 @@ rm Pipfile Pipfile.lock
 
 # Generate poetry.lock
 poetry lock
+
+# Update your Dockerfiles to install w/ Poetry instead of Pipenv (see the ones in boilerplate)
 ```
 
 ## Usage for a new project
