@@ -9,6 +9,9 @@ description = ""
 authors = ["Gozynta <support@gozynta.com>"]
 license = "Proprietary"
 readme = "README.md"
+classifiers = [
+    "Private :: Do Not Upload"
+]
 packages = [{include = "fizzbuzz", from="pysrc"}]
 
 [tool.poetry.dependencies]
