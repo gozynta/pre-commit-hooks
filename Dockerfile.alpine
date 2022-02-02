@@ -50,7 +50,7 @@ COPY poetry.lock pyproject.toml ./
 
 # Have Poetry install dependencies
 ENV GOOGLE_APPLICATION_CREDENTIALS=/gcloud_creds.json
-RUN --mount=type=secret,id=gar_creds,dst=/gcloud_creds.json,uid=1000 poetry install --no-interaction --no-dev --no-root
+RUN --mount=type=secret,id=gar_creds,dst=/gcloud_creds.json,uid=1000 poetry install --no-interaction --without=dev --no-root
 
 ##### FINAL IMAGE #####
 FROM base as final
