@@ -25,6 +25,7 @@ FROM base as builder
 # Not worried about image size on the builder so we can cache more layers
 
 # Install Poetry
+# Put python package build dependies here (Ex: libkafka-dev) then add the runtime version to the final image below...
 RUN apk add --no-cache gcc libc-dev make libffi-dev
 # Ignoring this semgrep warning for the following reasons:
 # - It's redundant due to PIP_NO_CACHE_DIR being defined above. If this was the only reason then I'd just add it to the pip line.
@@ -59,6 +60,9 @@ WORKDIR /srv
 
 # Not a bad idea to keep the copyright with the code
 COPY LICENSE LICENSE
+
+# Install any required runtime dependencies for python packages here
+# RUN apk add --no-cache # libffi or libkafka or ...
 
 # Setup venv
 COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
