@@ -40,8 +40,6 @@ RUN pip install "poetry==${POETRY_VERSION}"
 RUN pip install keyrings.google-artifactregistry-auth
 RUN poetry --version
 
-WORKDIR /srv
-
 # Create venv
 RUN python -m venv $VIRTUAL_ENV
 # Don't add the venv to PATH until after we're done with the stuff we don't want in it (Ex: pipx)
@@ -56,6 +54,8 @@ RUN --mount=type=secret,id=gar_creds,dst=/gcloud_creds.json,uid=1000 poetry inst
 
 ##### FINAL IMAGE #####
 FROM base as final
+
+WORKDIR /srv
 
 # Not a bad idea to keep the copyright with the code
 COPY LICENSE LICENSE
