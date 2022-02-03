@@ -12,7 +12,7 @@ Specifically:
 
 ## Dev Prerequisites
 - python 3.9
-- poetry (although pipenv will still work too)
+- poetry  `sudo apt install pipx && pipx install poetry`
 - (optional) VSCode with `editorconfig.editorconfig`, `ms-python.python`, and `ms-python.vscode-pylance` extensions installed
 
 ## Dev Installation

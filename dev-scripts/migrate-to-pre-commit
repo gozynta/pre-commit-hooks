@@ -22,4 +22,10 @@ if [[ -L .git/hooks ]] ; then
   rm .git/hooks
 fi
 
-pipenv run pre-commit install --install-hooks
+if command -v pre-commit > /dev/null; then
+    pre-commit install --install-hooks
+elif [ -f pyproject.toml ] && (grep 'tool.poetry.dependencies' pyproject.toml > /dev/null); then
+    poetry run pre-commit install --install-hooks
+elif [ -f Pipfile ]; then
+    pipenv run pre-commit install --install-hooks
+fi
