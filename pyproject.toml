@@ -13,6 +13,7 @@ classifiers = [
     "Private :: Do Not Upload"
 ]
 packages = [{include = "fizzbuzz", from="pysrc"}]
+include = ["LICENSE"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
