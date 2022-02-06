@@ -5,3 +5,7 @@ variables:
   PYTHON_VERSION: '3.9'
   PYTHON_CONTAINER_TYPE: '-alpine'
   PYTEST_BINARY_DEPS_CMD: ''
+
+# Dummy test to test that dev-scripts/check-python-versions-match.py can parse yaml using a !reference
+.test-reference:
+  stage: !reference [pytest, stage]

@@ -88,9 +88,21 @@ def test_poetry_matches(file: os.PathLike, version: str):
         raise Exception(f"In {file} poetry defines a different python version: '{our_version_orig}' vs '{version}'")
 
 
-def main(files: list[str]):
+def load_gitlabyaml(gitlab_yml_path: str):
+    def reference_constructor(loader: yaml.SafeLoader, node: yaml.nodes.MappingNode) -> None:
+        """Dummy loader so pyyaml doesn't choke on !reference.
+        https://docs.gitlab.com/ee/ci/yaml/yaml_optimization.html#reference-tags
+        """
+        return None
+
     with open(".gitlab-ci.yml", "r") as gitlab_yml:
-        gitlab_variables = yaml.safe_load(gitlab_yml)["variables"]
+        loader = yaml.SafeLoader
+        loader.add_constructor("!reference", reference_constructor)
+        return yaml.load(gitlab_yml, Loader=loader)  # nosec: B506 we're using SafeLoader
+
+
+def main(files: list[str]):
+    gitlab_variables = load_gitlabyaml(".gitlab-ci.yml")["variables"]
 
     gitlab_python_version = gitlab_variables["PYTHON_VERSION"].strip()
 

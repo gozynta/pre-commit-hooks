@@ -21,6 +21,14 @@ repos:
     - id: check-yaml
       args:
         - "--allow-multiple-documents"
+      exclude: '^.gitlab-ci.yml'
+    # Need --unsafe for .gitlab-ci.yml due to gitlab's custom !reference tag
+    # This check may be redundant since invalidly formed yaml will make check-python-versions-match.py fail
+    - id: check-yaml
+      args:
+        - "--allow-multiple-documents"
+        - "--unsafe"
+      files: '^.gitlab-ci.yml'
     - id: check-merge-conflict
     - id: detect-private-key
     - id: destroyed-symlinks
