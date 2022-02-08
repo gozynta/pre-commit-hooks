@@ -9,6 +9,8 @@ Specifically:
 - Sorts imports with isort
 - Configures VSCode to use black, flake8, and isort from the pipenv
 - git pre-commit hook to check code standards before commits are created
+- Sample Dockerfile
+- Standard set of dev dependencies for poetry including library building
 
 ## Dev Prerequisites
 - python 3.9
