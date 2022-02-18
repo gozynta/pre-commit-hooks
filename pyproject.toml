@@ -20,7 +20,7 @@ python = "^3.9"
 
 [tool.poetry.dev-dependencies]
 PyYAML = "*"
-black = "^21.12b0"
+black = "*"
 coverage = "*"
 flake8 = "*"
 isort = "*"
