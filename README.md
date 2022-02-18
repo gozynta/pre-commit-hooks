@@ -51,21 +51,30 @@ poetry lock
 ```
 
 ## Usage for a new project
-
-1. Clone this repo.  Rename the `origin` remote to `boilerplate`, and make your new Gitlab project your origin.
-   `git remote rename origin boilerplate`
+1. Create gitlab project
+  - Option a: Create using gitlab template
+    - Create new project in Gitlab
+    - Select "Create from template"
+    - Choose this template from the "group" tab
+    - Clone your new project from gitlab.
+  - Option b: Manually create new project
+     - Clone this repo.
+     - Rename the origin remote to boilerplate:
+        `git remote rename origin boilerplate`
+     - Make your new Gitlab project
+     - Set your origin:
+        `git remote add origin <url>`
+     - Push to your new Gitlab project:
+        `git push -u origin main`
 2. Rename pysrc/fizzbuzz.py to suit your project and start coding/testing
-3. Consider adding Pipfile.lock to the .gitignore (IE: if you're building a shared library)
+3. Consider adding poetry.lock to the .gitignore (IE: if you're building a shared library)
 4. Create symlink to one of the Dockerfiles (Ex: `ln -s Dockerfile.alpine Dockerfile`)
 5. Update this file
-6. Push to a new Gitlab project
-   `git remote add origin <url> && git push -u origin main`
-7. Later, when there are updates to this project you can pull changes from the `boilerplate` remote to get the updates.
-   - There will surely be merge conflicts, especially if this file has changed, but I think this will be an ok process overall for keeping these base files up to date?
+6. Later, when there are updates to this project you can pull changes from the `boilerplate` remote to get the updates.
 
 ## Updating an existing project
 1. Make sure this repo is set up as a remote:
-    `bash -c '(git remote |grep boilerplate) || git remote add boilerplate "git@gitlab.com:gozynta/boilerplate.git"'`
+    `bash -c '(git remote |grep boilerplate) || git remote add boilerplate "git@gitlab.com:gozynta/project-templates/boilerplate.git"'`
 2. Update the remote
     `git fetch --all`
 3. Pull changes from this repo. (Note: This is the exception to our usual rule of "no merge commits".  That ensures that projects using this repo will keep track of what changes from here have/haven't been merged.  Rebasing your project on this repo would be a big mess, and cherry-picking commits from here is very error-prone: manual, unclear what was picked before, and still requires fixing merge conflicts).
