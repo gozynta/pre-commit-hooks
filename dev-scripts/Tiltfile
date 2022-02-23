@@ -1,7 +1,7 @@
 analytics_settings(True)
 disable_snapshots()
 
-local_resource('pipenv', 'pipenv install -d', deps=['Pipfile'])
+local_resource('poetry', 'poetry install', deps=['pyproject.toml'])
 
 PROJECT_ROOT = '..'
 
@@ -29,25 +29,25 @@ def all_git_files(project_root):
 # Run tests
 test(
     'pytest',
-    'pipenv run coverage run --source=pysrc -m pytest',
+    'poetry run coverage run --source=pysrc -m pytest',
     dir=PROJECT_ROOT,
     deps=all_pysrc_py_files(PROJECT_ROOT)+all_pytest_py_files(PROJECT_ROOT),
-    resource_deps=['pipenv'],
+    resource_deps=['poetry'],
     labels=['test'],
     )
 test(
     'coverage',
-    'pipenv run coverage report -m',
+    'poetry run coverage report -m',
     dir=PROJECT_ROOT,
     deps=all_pysrc_py_files(PROJECT_ROOT)+all_pytest_py_files(PROJECT_ROOT),
-    resource_deps=['pytest'],
+    resource_deps=['poetry'],
     labels=['test'],
     )
 test(
     'pre-commit',
-    'pipenv run pre-commit run --all-files --color always',
+    'poetry run pre-commit run --all-files --color always',
     dir=PROJECT_ROOT,
     deps=all_git_files(PROJECT_ROOT),
-    resource_deps=['pipenv'],
+    resource_deps=['poetry'],
     labels=['test'],
 )
