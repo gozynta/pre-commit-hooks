@@ -78,7 +78,7 @@ poetry lock
 2. Update the remote
     `git fetch --all`
 3. Pull changes from this repo. (Note: This is the exception to our usual rule of "no merge commits".  That ensures that projects using this repo will keep track of what changes from here have/haven't been merged.  Rebasing your project on this repo would be a big mess, and cherry-picking commits from here is very error-prone: manual, unclear what was picked before, and still requires fixing merge conflicts).
-    `git pull --rebase=false boilerplate main`
+    `git pull --rebase=false --no-ff boilerplate main`
 4. Now you will likely have a bunch of merge conflicts to go through.  Please carefully consider each of these.  The one exception is the .lock files.  I'd recommend going back to your previous version of the lock, and then updating it.  `git checkout <yourbranch> -- poetry.lock && poetry lock`
 5. Push your branch, etc as usual.  Just DO NOT do a rebase on your branch AND make sure Gitlab DOES NOT squash your commits.
 
