@@ -1,2 +1,8 @@
 [virtualenvs]
 in-project = true
+
+[repositories]
+[repositories.pydev]
+url = "https://us-east1-python.pkg.dev/kube-test-284217/pydev/"
+[repositories.kubernetes-242623]
+url = "https://us-python.pkg.dev/kubernetes-242623/gozynta-pipy/"
