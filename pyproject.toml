@@ -33,3 +33,11 @@ typer = "*"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "pydev"
+url = "https://us-east1-python.pkg.dev/kube-test-284217/pydev/simple"
+
+[[tool.poetry.source]]
+name = "kubernetes-242623"
+url = "https://us-python.pkg.dev/kubernetes-242623/gozynta-pipy/simple"

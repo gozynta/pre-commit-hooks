@@ -9,6 +9,13 @@ repos:
           - "PyYAML"
           - "pipfile"
           - "typer"
+      - id: check-poetry-sources
+        name: Check poetry sources
+        language: python
+        entry: dev-scripts/check-poetry-sources.py
+        additional_dependencies:
+          - "toml"
+          - "typer"
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.1.0
     hooks:
