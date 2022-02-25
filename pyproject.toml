@@ -19,16 +19,8 @@ include = ["LICENSE"]
 python = "^3.9"
 
 [tool.poetry.dev-dependencies]
-PyYAML = "*"
-black = "*"
 coverage = "*"
-flake8 = "*"
-isort = "*"
-pre-commit = "*"
 pytest = "*"
-python-dotenv = "*"
-sh = "*"
-typer = "*"
 
 [build-system]
 requires = ["poetry-core"]
