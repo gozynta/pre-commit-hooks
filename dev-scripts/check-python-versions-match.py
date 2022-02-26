@@ -19,6 +19,8 @@ def handle_dockerfile_line(line: str) -> Union[str, None]:
     """
     >>> handle_dockerfile_line('FROM python:3.9 ')
     '3.9'
+    >>> handle_dockerfile_line('FROM python:3.9 as base')
+    '3.9'
     >>> handle_dockerfile_line('FROM python:3.9-alpine')
     '3.9'
     >>> handle_dockerfile_line('from python:3.9-alpine')
@@ -39,6 +41,11 @@ def handle_dockerfile_line(line: str) -> Union[str, None]:
         return "latest"
 
     tag = line.split(":")[1]
+
+    # remove ' as base'
+    if " " in tag:
+        tag = tag.split(" ")[0]
+
     if not tag[0].isdigit():
         return tag
 

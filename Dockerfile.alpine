@@ -2,7 +2,7 @@ FROM python:3.9-alpine as base
 
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
-RUN adduser -D -g '' worker
+RUN adduser -D -g '' -u 1000 worker
 
 ARG POETRY_VERSION=1.2.0a2
 ARG VIRTUAL_ENV=/venv
@@ -27,6 +27,7 @@ FROM base as builder
 # Install Poetry
 # Put python package build dependies here (Ex: libkafka-dev) then add the runtime version to the final image below...
 RUN apk add --no-cache gcc libc-dev make libffi-dev
+
 # Ignoring this semgrep warning for the following reasons:
 # - It's redundant due to PIP_NO_CACHE_DIR being defined above. If this was the only reason then I'd just add it to the pip line.
 # - It's in a throw-away builder image so size doesn't matter.  Still not a good enough reason to ignore.
@@ -67,6 +68,7 @@ COPY LICENSE LICENSE
 # Setup venv
 COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV PYTHONPATH="/srv/pysrc:$PATH"
 
 # Upload source
 COPY pysrc pysrc
@@ -74,4 +76,4 @@ COPY pysrc pysrc
 # Run as non-root user
 USER worker
 
-ENTRYPOINT ["python", "pysrc/fizzbuzz.py"]
+ENTRYPOINT ["python", "-m", "fizzbuzz"]

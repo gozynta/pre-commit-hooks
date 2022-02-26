@@ -1,31 +1,82 @@
-from python:3.9
+from python:3.9 as base
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
-RUN adduser --disabled-password --gecos '' worker
+RUN adduser --disabled-password --gecos '' --uid 1000 worker
+
+ARG POETRY_VERSION=1.2.0a2
+ARG VIRTUAL_ENV=/venv
+
+ENV PIP_DEFAULT_TIMEOUT=100 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_NO_CACHE_DIR=1 \
+    POETRY_VERSION=${POETRY_VERSION} \
+    VIRTUAL_ENV=${VIRTUAL_ENV}
 
 RUN set -ex \
   && mkdir -p /srv \
-#  && apt-get update \
-#  && apt-get install --no-install-recommends -y <put apt packages here> \
-#  && apt-get clean \
-#  && rm -rf /var/lib/apt/lists/* \
   && pip install --no-cache-dir --upgrade pip \
-  && pip install --no-cache-dir pipenv
+  && apt-get update \
+  && apt-get upgrade -y \
+  && apt-get clean
+
+##### BUILDER IMAGE #####
+FROM base as builder
+
+# Not worried about image size on the builder so we can cache more layers
+
+# Install Poetry
+# Put python package build dependies here (Ex: libkafka-dev) then add the runtime version to the final image below...
+# RUN set -ex \
+#   && apt-get update \
+#   && apt-get install --no-install-recommends -y libkafka-dev\
+#   && apt-get clean
+
+# Ignoring this semgrep warning for the following reasons:
+# - It's redundant due to PIP_NO_CACHE_DIR being defined above. If this was the only reason then I'd just add it to the pip line.
+# - It's in a throw-away builder image so size doesn't matter.  Still not a good enough reason to ignore.
+# - I hope to experiment with --mount=type=cache here to speed up builds in the future.  This is the real reason.
+#   References:
+#   - https://github.com/moby/buildkit/blob/master/frontend/dockerfile/docs/syntax.md#run---mounttypetmpfs
+#   - https://vsupalov.com/buildkit-cache-mount-dockerfile/
+#   How does this interact with gitlab-ci caching?  Does --import-cache and --export-cache handle it all?
+# nosemgrep: generic.dockerfile.best-practice.missing-pip-no-cache-dir.missing-pip-no-cache-dir
+RUN pip install "poetry==${POETRY_VERSION}"
+# nosemgrep: generic.dockerfile.best-practice.missing-pip-no-cache-dir.missing-pip-no-cache-dir
+RUN pip install keyrings.google-artifactregistry-auth
+RUN poetry --version
+
+# Create venv
+RUN python -m venv $VIRTUAL_ENV
+# Don't add the venv to PATH until after we're done with the stuff we don't want in it (Ex: pipx)
+# This will need to be done again in the final image
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+COPY poetry.lock pyproject.toml ./
+
+# Have Poetry install dependencies
+ENV GOOGLE_APPLICATION_CREDENTIALS=/gcloud_creds.json
+RUN --mount=type=secret,id=gar_creds,dst=/gcloud_creds.json,uid=1000 poetry install --no-interaction --without=dev --no-root
+
+##### FINAL IMAGE #####
+FROM base as final
 
 WORKDIR /srv
 
-# Copy Pipfile first, and install dependencies
-# This is a separate step so it doesn't re-run with every source change
-COPY Pipfile Pipfile
-COPY Pipfile.lock Pipfile.lock
-RUN set -ex \
-  && pipenv install --deploy --system \
-  && rm -rf ~/.cache
-
 # Not a bad idea to keep the copyright with the code
 COPY LICENSE LICENSE
+
+# Install any required runtime dependencies for python packages here
+# RUN set -ex \
+#     && apt-get update \
+#     && apt-get install --no-install-recommends -y libkafka \
+#     && apt-get clean
+
+# Setup venv
+COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV PYTHONPATH="/srv/pysrc:$PATH"
 
 # Upload source
 COPY pysrc pysrc
@@ -33,4 +84,4 @@ COPY pysrc pysrc
 # Run as non-root user
 USER worker
 
-ENTRYPOINT ["python", "pysrc/fizzbuzz.py"]
+ENTRYPOINT ["python", "-m", "fizzbuzz"]
