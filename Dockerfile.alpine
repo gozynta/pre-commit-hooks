@@ -4,16 +4,15 @@ ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 RUN adduser -D -g '' -u 1000 worker
 
-ARG POETRY_VERSION=1.2.0b2
 ARG VIRTUAL_ENV=/venv
-
-# https://semgrep.dev/r/generic.dockerfile.best-practice.set-pipefail.set-pipefail
-SHELL ["/bin/ash", "-c"]
+ARG POETRY_VERSION=1.2.0b3
+ENV POETRY_VERSION=${POETRY_VERSION}
+ARG POETRY_PACKAGE="poetry==${POETRY_VERSION}"
+ENV POETRY_PACKAGE=${POETRY_PACKAGE}
 
 ENV PIP_DEFAULT_TIMEOUT=100 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=1 \
-    POETRY_VERSION=${POETRY_VERSION} \
     VIRTUAL_ENV=${VIRTUAL_ENV}
 
 RUN set -ex \
@@ -29,7 +28,7 @@ FROM base as builder
 
 # Install Poetry
 # Put python package build dependies here (Ex: libkafka-dev) then add the runtime version to the final image below...
-RUN apk add --no-cache gcc libc-dev make libffi-dev
+RUN apk add --no-cache gcc libc-dev make libffi-dev git
 
 # Ignoring this semgrep warning for the following reasons:
 # - It's redundant due to PIP_NO_CACHE_DIR being defined above. If this was the only reason then I'd just add it to the pip line.
@@ -40,7 +39,7 @@ RUN apk add --no-cache gcc libc-dev make libffi-dev
 #   - https://vsupalov.com/buildkit-cache-mount-dockerfile/
 #   How does this interact with gitlab-ci caching?  Does --import-cache and --export-cache handle it all?
 # nosemgrep: generic.dockerfile.best-practice.missing-pip-no-cache-dir.missing-pip-no-cache-dir
-RUN pip install "poetry==${POETRY_VERSION}"
+RUN pip install "${POETRY_PACKAGE}"
 # nosemgrep: generic.dockerfile.best-practice.missing-pip-no-cache-dir.missing-pip-no-cache-dir
 RUN pip install keyrings.google-artifactregistry-auth
 RUN poetry --version

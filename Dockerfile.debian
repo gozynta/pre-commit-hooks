@@ -5,8 +5,11 @@ ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 RUN adduser --disabled-password --gecos '' --uid 1000 worker
 
-ARG POETRY_VERSION=1.2.0b2
 ARG VIRTUAL_ENV=/venv
+ARG POETRY_VERSION=1.2.0b3
+ENV POETRY_VERSION=${POETRY_VERSION}
+ARG POETRY_PACKAGE="poetry==${POETRY_VERSION}"
+ENV POETRY_PACKAGE=${POETRY_PACKAGE}
 
 # https://semgrep.dev/r/generic.dockerfile.best-practice.set-pipefail.set-pipefail
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -14,7 +17,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV PIP_DEFAULT_TIMEOUT=100 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_NO_CACHE_DIR=1 \
-    POETRY_VERSION=${POETRY_VERSION} \
     VIRTUAL_ENV=${VIRTUAL_ENV}
 
 RUN set -ex \
@@ -45,7 +47,7 @@ FROM base as builder
 #   - https://vsupalov.com/buildkit-cache-mount-dockerfile/
 #   How does this interact with gitlab-ci caching?  Does --import-cache and --export-cache handle it all?
 # nosemgrep: generic.dockerfile.best-practice.missing-pip-no-cache-dir.missing-pip-no-cache-dir
-RUN pip install "poetry==${POETRY_VERSION}"
+RUN pip install "${POETRY_PACKAGE}"
 # nosemgrep: generic.dockerfile.best-practice.missing-pip-no-cache-dir.missing-pip-no-cache-dir
 RUN pip install keyrings.google-artifactregistry-auth
 RUN poetry --version
