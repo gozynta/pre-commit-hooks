@@ -52,5 +52,6 @@ local_resource(
     deps=all_git_files(PROJECT_ROOT),
     resource_deps=['poetry'],
     labels=['test'],
+    trigger_mode=TRIGGER_MODE_MANUAL,
     allow_parallel=True,
 )
