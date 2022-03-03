@@ -14,6 +14,9 @@ norecursedirs = [
 testpaths = [
     "pytests",
 ]
+pythonpath = [
+    "pysrc",
+]
 
 [tool.poetry]
 name = "boilerplate"
