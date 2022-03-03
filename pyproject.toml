@@ -4,7 +4,7 @@ experimental_string_processing = true
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = ""
+addopts = "--strict-markers --strict-config"
 norecursedirs = [
     ".git",
     ".tox",
