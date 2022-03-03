@@ -2,6 +2,19 @@
 line-length = 119
 experimental_string_processing = true
 
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--cache-clear"
+norecursedirs = [
+    ".git",
+    ".tox",
+    ".env",
+    ".venv",
+]
+testpaths = [
+    "pytests",
+]
+
 [tool.poetry]
 name = "boilerplate"
 version = "0.0.0"
