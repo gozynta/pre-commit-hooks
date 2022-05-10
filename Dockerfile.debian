@@ -1,12 +1,15 @@
-from python:3.9-slim as base
+FROM python:3.9-slim as base
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 RUN adduser --disabled-password --gecos '' --uid 1000 worker
 
-ARG POETRY_VERSION=1.2.0a2
+ARG POETRY_VERSION=1.2.0b1
 ARG VIRTUAL_ENV=/venv
+
+# https://semgrep.dev/r/generic.dockerfile.best-practice.set-pipefail.set-pipefail
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV PIP_DEFAULT_TIMEOUT=100 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
@@ -15,11 +18,11 @@ ENV PIP_DEFAULT_TIMEOUT=100 \
     VIRTUAL_ENV=${VIRTUAL_ENV}
 
 RUN set -ex \
-  && mkdir -p /srv \
-  && pip install --no-cache-dir --upgrade pip \
-  && apt-get update \
-  && apt-get upgrade -y \
-  && apt-get clean
+    && mkdir -p /srv \
+    && pip install --no-cache-dir --upgrade pip \
+    && apt-get update \
+    && apt-get upgrade -y \
+    && apt-get clean
 
 ##### BUILDER IMAGE #####
 FROM base as builder

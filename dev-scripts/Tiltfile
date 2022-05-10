@@ -27,27 +27,30 @@ def all_git_files(project_root):
     return get_filelist_from_command('git ls-files -z', project_root, '\0')
 
 # Run tests
-test(
+local_resource(
     'pytest',
     'poetry run coverage run --source=pysrc -m pytest',
     dir=PROJECT_ROOT,
     deps=all_pysrc_py_files(PROJECT_ROOT)+all_pytest_py_files(PROJECT_ROOT),
     resource_deps=['poetry'],
     labels=['test'],
-    )
-test(
+    allow_parallel=True,
+)
+local_resource(
     'coverage',
     'poetry run coverage report -m',
     dir=PROJECT_ROOT,
     deps=all_pysrc_py_files(PROJECT_ROOT)+all_pytest_py_files(PROJECT_ROOT),
     resource_deps=['poetry'],
     labels=['test'],
-    )
-test(
+    allow_parallel=True,
+)
+local_resource(
     'pre-commit',
     'poetry run pre-commit run --all-files --color always',
     dir=PROJECT_ROOT,
     deps=all_git_files(PROJECT_ROOT),
     resource_deps=['poetry'],
     labels=['test'],
+    allow_parallel=True,
 )

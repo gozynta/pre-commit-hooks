@@ -4,8 +4,11 @@ ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 RUN adduser -D -g '' -u 1000 worker
 
-ARG POETRY_VERSION=1.2.0a2
+ARG POETRY_VERSION=1.2.0b1
 ARG VIRTUAL_ENV=/venv
+
+# https://semgrep.dev/r/generic.dockerfile.best-practice.set-pipefail.set-pipefail
+SHELL ["/bin/ash", "-c"]
 
 ENV PIP_DEFAULT_TIMEOUT=100 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
@@ -14,10 +17,10 @@ ENV PIP_DEFAULT_TIMEOUT=100 \
     VIRTUAL_ENV=${VIRTUAL_ENV}
 
 RUN set -ex \
-  && mkdir -p /srv \
-  && pip install --no-cache-dir --upgrade pip \
-  && apk update --no-cache \
-  && apk upgrade --no-cache
+    && mkdir -p /srv \
+    && pip install --no-cache-dir --upgrade pip \
+    && apk update --no-cache \
+    && apk upgrade --no-cache
 
 ##### BUILDER IMAGE #####
 FROM base as builder

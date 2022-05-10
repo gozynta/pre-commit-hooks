@@ -8,20 +8,16 @@ repos:
         additional_dependencies:
           - "PyYAML"
           - "pipfile"
-          - "typer"
-          # Needed until typer fixes https://github.com/tiangolo/typer/issues/377
-          - "click<8.1.0"
+          - "typer>=0.4.1"
       - id: check-poetry-sources
         name: Check poetry sources
         language: python
         entry: dev-scripts/check-poetry-sources.py
         additional_dependencies:
           - "toml"
-          - "typer"
-          # Needed until typer fixes https://github.com/tiangolo/typer/issues/377
-          - "click<8.1.0"
+          - "typer>=0.4.1"
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.2.0
     hooks:
       - id: pretty-format-json
         exclude: ^Pipfile.lock$
