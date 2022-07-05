@@ -1,7 +1,7 @@
 analytics_settings(True)
 disable_snapshots()
 
-local_resource('poetry', 'poetry install', deps=['pyproject.toml'])
+local_resource('poetry', 'poetry install --all-extras', deps=['pyproject.toml'])
 
 PROJECT_ROOT = '..'
 
