@@ -5,7 +5,7 @@ ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 RUN adduser --disabled-password --gecos '' --uid 1000 worker
 
-ARG POETRY_VERSION=1.2.0b1
+ARG POETRY_VERSION=1.2.0b2
 ARG VIRTUAL_ENV=/venv
 
 # https://semgrep.dev/r/generic.dockerfile.best-practice.set-pipefail.set-pipefail
