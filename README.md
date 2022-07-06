@@ -13,7 +13,7 @@ Specifically:
 - Standard set of dev dependencies for poetry including library building
 
 ## Dev Prerequisites
-- python 3.9
+- python 3.10
 - poetry  `sudo apt install pipx && pipx install poetry`
 - (optional) VSCode with `editorconfig.editorconfig`, `ms-python.python`, and `ms-python.vscode-pylance` extensions installed
 

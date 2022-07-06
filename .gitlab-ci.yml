@@ -2,7 +2,7 @@ include:
   - project: 'gozynta/gcloud-tagging-docker'
     file: '/gitlab-ci-template.yml'
 variables:
-  PYTHON_VERSION: '3.9'
+  PYTHON_VERSION: '3.10'
   PYTHON_CONTAINER_TYPE: '-alpine'
   PYTEST_BINARY_DEPS_CMD: ''
 
