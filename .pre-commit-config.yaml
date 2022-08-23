@@ -17,7 +17,7 @@ repos:
           - "toml"
           - "typer>=0.4.1"
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.2.0
+    rev: v4.3.0
     hooks:
       - id: pretty-format-json
         exclude: ^Pipfile.lock$
@@ -44,7 +44,7 @@ repos:
       - id: mixed-line-ending
       - id: no-commit-to-branch
   - repo: https://github.com/asottile/yesqa
-    rev: v1.3.0
+    rev: v1.4.0
     hooks:
       - id: yesqa
   - repo: https://github.com/pre-commit/pygrep-hooks
@@ -57,11 +57,11 @@ repos:
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
-    rev: 22.3.0
+    rev: 22.6.0
     hooks:
       - id: black
   - repo: https://github.com/PyCQA/flake8
-    rev: 4.0.1
+    rev: 5.0.4
     hooks:
       - id: flake8
   - repo: https://github.com/PyCQA/bandit
