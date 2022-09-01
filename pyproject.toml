@@ -3,8 +3,9 @@ line-length = 119
 experimental_string_processing = true
 
 [tool.pytest.ini_options]
-minversion = "6.0"
+minversion = "7.0"
 addopts = "--strict-markers --strict-config"
+asyncio_mode = "auto"
 norecursedirs = [
     ".git",
     ".tox",
@@ -35,8 +36,9 @@ include = ["LICENSE"]
 python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
-coverage = "*"
-pytest = "*"
+coverage = "^6.4.0"
+pytest = "^7.1.0"
+pytest-asyncio = "^0.18.3"
 
 [build-system]
 requires = ["poetry-core"]
