@@ -32,7 +32,7 @@ poetry install
 
 # Install Poetry and pipenv-poetry-migrate if you don't have them
 sudo apt install pipx
-pipx install "poetry>=1.2.0a2"
+pipx install "poetry~=1.2.0"
 pipx install pipenv-poetry-migrate
 
 # Convert dependencies
