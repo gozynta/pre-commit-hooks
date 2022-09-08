@@ -14,13 +14,23 @@ Specifically:
 
 ## Dev Prerequisites
 - python 3.10
-- poetry  `sudo apt install pipx && pipx install poetry`
+- poetry with access to the `keyrings.google-artifactregistry-auth` package
+    ```
+    apt-get install pipx
+    pipx install "poetry~=1.2.0"
+    pipx inject poetry keyrings.google-artifactregistry-auth
+    ```
+- gcloud - authenticated (for access to artifactregistry)
+    `gcloud auth application-default login && gcloud auth application-default set-quota-project gozynta-dev-quota-project`
 - (optional) VSCode with `editorconfig.editorconfig`, `ms-python.python`, and `ms-python.vscode-pylance` extensions installed
 
 ## Dev Installation
 
 ```bash
-poetry install
+# Initialize poetry
+poetry install --with=dev
+
+# Install git pre-commit hooks
 ./dev-scripts/install
 ```
 
