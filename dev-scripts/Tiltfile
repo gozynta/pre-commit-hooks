@@ -1,9 +1,25 @@
 analytics_settings(True)
 disable_snapshots()
 
-local_resource('poetry', 'poetry install --all-extras', deps=['pyproject.toml'])
-
 PROJECT_ROOT = '..'
+
+# Add a 'poetry lock' resource that's only ever manually triggered.
+# poetry.lock should not be auto-updated.  It may bring in new dependency versions that introduce breaking changes.
+local_resource(
+    'poetry lock',
+    'poetry lock',
+    deps=[os.path.join(PROJECT_ROOT,'pyproject.toml')],
+    labels=['poetry'],
+    auto_init=False,
+    trigger_mode=TRIGGER_MODE_MANUAL,
+    )
+
+local_resource(
+    'poetry',
+    'poetry install --all-extras',
+    deps=[os.path.join(PROJECT_ROOT, 'poetry.lock'), os.path.join(PROJECT_ROOT, 'pyproject.toml')],
+    labels=['poetry'],
+    )
 
 def get_filelist_from_command(command, working_dir=PROJECT_ROOT, file_separator='\n'):
     out = str(local(command, dir=working_dir))
