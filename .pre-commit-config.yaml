@@ -57,9 +57,15 @@ repos:
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
-    rev: 22.8.0
+    rev: 22.10.0
     hooks:
       - id: black
+  - repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+      - id: black
+        files: Tiltfile$
+        types_or: [file]
   - repo: https://github.com/PyCQA/flake8
     rev: 5.0.4
     hooks:
