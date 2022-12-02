@@ -22,7 +22,14 @@ Specifically:
     ```
 - gcloud - authenticated (for access to artifactregistry)
     `gcloud auth application-default login && gcloud auth application-default set-quota-project gozynta-dev-quota-project`
-- (optional) VSCode with `editorconfig.editorconfig`, `ms-python.python`, and `ms-python.vscode-pylance` extensions installed
+- (optional) VSCode with the following extensions installed
+  - `editorconfig.editorconfig` - respect settings in .editorconfig file, use the equivilent for your prefered editor.
+  - `stkb.rewrap` - auto line wrap at ruler (if you're into this sort of thing)
+    - Consider turning on the Auto Wrap setting as well
+  - `ms-python.python` - python features
+  - `ms-python.vscode-pylance` - python code completion helpers
+  - `ms-python.isort` - auto sort imports on save
+  -
 
 ## Dev Installation
 
