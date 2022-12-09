@@ -15,6 +15,7 @@ norecursedirs = [
 testpaths = [
     "pytests",
 ]
+timeout = 60
 pythonpath = [
     "pysrc",
 ]
@@ -39,6 +40,7 @@ python = "^3.10"
 coverage = "^6.4.0"
 pytest = "^7.1.0"
 pytest-asyncio = "^0.18.3"
+pytest-timeout = "^2.1.0"
 
 [build-system]
 requires = ["poetry-core"]
