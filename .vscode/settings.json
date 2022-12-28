@@ -3,7 +3,7 @@
     "source.organizeImports": true
   },
   "editor.rulers": [
-    120
+    119
   ],
   "files.associations": {
     ".coveragerc": "ini"
