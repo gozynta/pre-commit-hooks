@@ -90,6 +90,14 @@ poetry lock
 6. Later, when there are updates to this project you can pull changes from the `boilerplate` remote to get the updates.
 
 ## Updating an existing project
+### Automatic
+1. Run `dev-scripts/update-boilerplate.sh`
+2. Resolve merge conflicts
+3. Run `poetry lock --no-update`
+4. Run `pre-commit run -a` and other tests.
+5. Commit/push your changes.
+
+### Manual
 1. Make sure this repo is set up as a remote:
     `bash -c '(git remote |grep boilerplate) || git remote add boilerplate "git@gitlab.com:gozynta/project-templates/boilerplate.git"'`
 2. Update the remote
