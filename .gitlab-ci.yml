@@ -1,10 +1,11 @@
 include:
-  - project: 'gozynta/gcloud-tagging-docker'
-    file: '/gitlab-ci-template.yml'
+  - project: "gozynta/gcloud-tagging-docker"
+    file: "/gitlab-ci-template.yml"
 variables:
-  PYTHON_VERSION: '3.10'
-  PYTHON_CONTAINER_TYPE: '-alpine'
-  PYTEST_BINARY_DEPS_CMD: ''
+  POETRY_VERSION: "~=1.5"
+  PYTHON_VERSION: "3.10"
+  PYTHON_CONTAINER_TYPE: "-slim"
+  PYTEST_BINARY_DEPS_CMD: ""
 
 # Dummy test to test that dev-scripts/check-python-versions-match.py can parse yaml using a !reference
 .test-reference:

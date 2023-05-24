@@ -17,7 +17,7 @@ Specifically:
 - poetry with access to the `keyrings.google-artifactregistry-auth` package
     ```
     apt-get install pipx
-    pipx install "poetry~=1.2.0"
+    pipx install "poetry~=1.5"
     pipx inject poetry keyrings.google-artifactregistry-auth
     ```
 - gcloud - authenticated (for access to artifactregistry)
@@ -49,7 +49,7 @@ poetry install --with=dev
 
 # Install Poetry and pipenv-poetry-migrate if you don't have them
 sudo apt install pipx
-pipx install "poetry~=1.2.0"
+pipx install "poetry~=1.5"
 pipx install pipenv-poetry-migrate
 
 # Convert dependencies

@@ -38,7 +38,7 @@ def check_for_simple_on_gar_sources(data: dict):
         return
 
     for source in sources:
-        url = urlparse(source["url"])
+        url = urlparse(source.get("url", ""))
         if url.hostname and url.hostname.endswith("python.pkg.dev") and not re.search("/simple/?$", url.path):
             raise Exception(
                 f"Google Artifact Registry source '{source['name']}', url doesn't end with '/simple/'.\n"
