@@ -75,3 +75,7 @@ repos:
     hooks:
       - id: bandit
         exclude: "^pytests/"
+  - repo: https://github.com/andrei-shabanski/poetry-plugin-sort
+    rev: v0.2.0
+    hooks:
+      - id: poetry-sort

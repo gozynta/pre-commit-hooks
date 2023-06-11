@@ -19,6 +19,7 @@ Specifically:
     apt-get install pipx
     pipx install "poetry~=1.5"
     pipx inject poetry keyrings.google-artifactregistry-auth
+    pipx inject poetry poetry-plugin-sort
     ```
 - gcloud - authenticated (for access to artifactregistry)
     `gcloud auth application-default login && gcloud auth application-default set-quota-project gozynta-dev-quota-project`
