@@ -1,39 +1,37 @@
-# Boilerplate for New Projects
+# Pre-commit Hooks
 
 ## Overview
-A boilerplate Python 3 project set up for unit tests and continuous integration.
+Some pre-commit hooks to help keep our code clean and consistent.
 
-Specifically:
+### check_poetry_sources
+Checks that all Google Artifact Registry sources are using the simple url format.
 
-- Enforces Python style rules with black and flake8
-- Sorts imports with isort
-- Configures VSCode to use black, flake8, and isort from the pipenv
-- git pre-commit hook to check code standards before commits are created
-- Sample Dockerfile
-- Standard set of dev dependencies for poetry including library building
+This is a very easy mistake to make, and the error is very unclear when they aren't meaning it can take a long time to
+troubleshoot.
+
+### check_python_versions_match
+Check that we're specifying the same python version in:
+- Dockerfiles that use FROM python
+- Pipfile
+- Poetry (pyproject.toml [tool.poetry.dependencies])
+- .gitlab-ci.yml PYTHON_VERSION variable
+
+# Usage
+Add the following to your .pre-commit-config.yaml
+```yaml
+  - repo: https://github.com/gozynta/pre-commit-hooks
+    rev: ""
+    hooks:
+      - id: check-poetry-sources
+      - id: check-python-versions-match
+```
 
 ## Dev Prerequisites
 - python 3.10
-- poetry with access to the `keyrings.google-artifactregistry-auth` package
-    ```
-    apt-get install pipx
-    pipx install "poetry~=1.5"
-    pipx inject poetry keyrings.google-artifactregistry-auth
-    pipx inject poetry poetry-plugin-sort
-    ```
-- gcloud - authenticated (for access to artifactregistry)
-    `gcloud auth application-default login && gcloud auth application-default set-quota-project gozynta-dev-quota-project`
-- (optional) VSCode with the following extensions installed
-  - `editorconfig.editorconfig` - respect settings in .editorconfig file, use the equivilent for your prefered editor.
-  - `stkb.rewrap` - auto line wrap at ruler (if you're into this sort of thing)
-    - Consider turning on the Auto Wrap setting as well
-  - `ms-python.python` - python features
-  - `ms-python.vscode-pylance` - python code completion helpers
-  - `ms-python.isort` - auto sort imports on save
-  -
+- poetry
+- just
 
 ## Dev Installation
-
 ```bash
 # Initialize poetry
 poetry install --with=dev
@@ -42,94 +40,8 @@ poetry install --with=dev
 ./dev-scripts/install
 ```
 
-## Converting your project from pipenv to poetry
+## Testing
 
 ```bash
-# Review the pyproject.toml, make sure it contains all the boilerplate from this project
-#   Update name, version, and packages
-
-# Install Poetry and pipenv-poetry-migrate if you don't have them
-sudo apt install pipx
-pipx install "poetry~=1.5"
-pipx install pipenv-poetry-migrate
-
-# Convert dependencies
-pipenv-poetry-migrate -f Pipfile -t pyproject.toml
-
-# Cleanup
-rm .venv
-pipenv --rm
-poetry remove -D pipfile
-rm Pipfile Pipfile.lock
-
-# Generate poetry.lock
-poetry lock
-
-# Update your Dockerfiles to install w/ Poetry instead of Pipenv (see the ones in boilerplate)
-```
-
-## Usage for a new project
-1. Create gitlab project
-  - Option a: Create using gitlab template
-    - Create new project in Gitlab
-    - Select "Create from template"
-    - Choose this template from the "group" tab
-    - Clone your new project from gitlab.
-  - Option b: Manually create new project
-     - Clone this repo.
-     - Rename the origin remote to boilerplate:
-        `git remote rename origin boilerplate`
-     - Make your new Gitlab project
-     - Set your origin:
-        `git remote add origin <url>`
-     - Push to your new Gitlab project:
-        `git push -u origin main`
-2. Rename pysrc/fizzbuzz.py to suit your project and start coding/testing
-3. Consider adding poetry.lock to the .gitignore (IE: if you're building a shared library)
-4. Create symlink to one of the Dockerfiles (Eg: `ln -s Dockerfile.debian Dockerfile`)
-5. Update this file
-6. Later, when there are updates to this project you can pull changes from the `boilerplate` remote to get the updates.
-
-## Updating an existing project
-### Automatic
-1. Run `dev-scripts/update-boilerplate.sh`
-2. Resolve merge conflicts
-3. Run `poetry lock --no-update`
-4. Run `pre-commit run -a` and other tests.
-5. Commit/push your changes.
-
-### Manual
-1. Make sure this repo is set up as a remote:
-    `bash -c '(git remote |grep boilerplate) || git remote add boilerplate "git@gitlab.com:gozynta/project-templates/boilerplate.git"'`
-2. Update the remote
-    `git fetch --all`
-3. Pull changes from this repo. (Note: This is the exception to our usual rule of "no merge commits".  That ensures that projects using this repo will keep track of what changes from here have/haven't been merged.  Rebasing your project on this repo would be a big mess, and cherry-picking commits from here is very error-prone: manual, unclear what was picked before, and still requires fixing merge conflicts).
-    `git pull --rebase=false --no-ff boilerplate main`
-4. Now you will likely have a bunch of merge conflicts to go through.  Please carefully consider each of these.  The one exception is the .lock files.  I'd recommend going back to your previous version of the lock, and then updating it.  `git checkout <yourbranch> -- poetry.lock && poetry lock`
-5. Push your branch, etc as usual.  Just DO NOT do a rebase on your branch AND make sure Gitlab DOES NOT squash your commits.
-
-## Notes on project structure.
-
-The pysrc/pytest structure is based on these recommendations:
-https://docs.pytest.org/en/6.2.x/goodpractices.html#tests-outside-application-code
-https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure
-
-Your project should be setup like this:
-(the ony .py files that should be directly in pysrc/ are scripts that are run but never imported)
-```
-pysrc/
-    main.py
-    other_utility_script.py
-    program_name/
-        __init__.py
-        module1.py
-        module2.py
-        submodule/__init__.py
-        etc....
-```
-
-## Run
-
-```bash
-poetry run ./pysrc/fizzbuzz
+just test
 ```

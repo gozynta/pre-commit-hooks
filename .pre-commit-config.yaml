@@ -1,21 +1,9 @@
 repos:
-  - repo: local
-    hooks:
-      - id: check-python-versions-match
-        name: Check that python versions match
-        language: python
-        entry: dev-scripts/check-python-versions-match.py
-        additional_dependencies:
-          - "PyYAML"
-          - "pipfile"
-          - "typer>=0.4.1"
-      - id: check-poetry-sources
-        name: Check poetry sources
-        language: python
-        entry: dev-scripts/check-poetry-sources.py
-        additional_dependencies:
-          - "toml"
-          - "typer>=0.4.1"
+  # - repo: https://github.com/gozynta/pre-commit-hooks
+  #   rev: ""
+  #   hooks:
+  #     - id: check-poetry-sources
+  #     - id: check-python-versions-match
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:

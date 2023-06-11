@@ -1,0 +1,11 @@
+- id: check-poetry-sources
+  name: Check Poetry Sources
+  description: "Sanity check our GAR poetry sources"
+  language: python
+  entry: check_poetry_sources
+  files: ^(.*/)?pyproject.toml$
+- id: check-python-versions-match
+  name: Check that python versions match
+  language: python
+  entry: check_python_versions_match
+  files: ^(.*/)?(\.gitlab-ci\.yml|pyproject\.toml|[Dd]ockerfile.*|Pipfile)$

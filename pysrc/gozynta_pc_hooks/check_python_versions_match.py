@@ -1,36 +1,19 @@
 #!/usr/bin/env python3
-import os
-from typing import Iterator, Union
+import pathlib
+from typing import Iterator, Union, cast
 
-# To toml or to tomli?
-# Black uses tomli so we should always have it.
-# Everything else seems to use toml so we should always have that too.
-# tomli is smaller, so use that, but if it stops being in our environment then switch to toml.
 import toml
 import typer
 import yaml
 
 app = typer.Typer()
 
-# Test with `pytest --doctest-modules dev-scripts/`
+
+class VersionCheckError(Exception):
+    pass
 
 
 def handle_dockerfile_line(line: str) -> Union[str, None]:
-    """
-    >>> handle_dockerfile_line('FROM python:3.9 ')
-    '3.9'
-    >>> handle_dockerfile_line('FROM python:3.9 as base')
-    '3.9'
-    >>> handle_dockerfile_line('FROM python:3.9-alpine')
-    '3.9'
-    >>> handle_dockerfile_line('from python:3.9-alpine')
-    '3.9'
-    >>> handle_dockerfile_line('from python')
-    'latest'
-    >>> handle_dockerfile_line('from python:foo')
-    'foo'
-    >>> handle_dockerfile_line('from somethingelse:foo')
-    """
     if not line.lower().startswith("from python"):
         return None
 
@@ -49,34 +32,32 @@ def handle_dockerfile_line(line: str) -> Union[str, None]:
     if not tag[0].isdigit():
         return tag
 
-    if "-" in tag:
-        return tag.split("-")[0]
-    else:
-        return tag
+    return tag.split("-")[0] if "-" in tag else tag
 
 
 def python_version_from_dockerfile(filename: str) -> Iterator[str]:
     with open(filename, "r") as df:
         for line in df:
-            version = handle_dockerfile_line(line)
-            if version:
+            if version := handle_dockerfile_line(line):
                 yield version
 
 
-def test_pipfile_matches(version):
+def check_pipfile_matches(version):
     # Import this package conditionally so we can drop the dev-dependency on projects that don't use it.
     import pipfile
 
-    pipfile_python_version = pipfile.load("Pipfile").data["_meta"]["requires"]["python_version"].strip()
+    pf_data = cast(dict, pipfile.load("Pipfile"))
+
+    pipfile_python_version = pf_data["_meta"]["requires"]["python_version"].strip()
 
     if pipfile_python_version != version:
-        raise Exception(f"Pipfile has a different python version: '{pipfile_python_version}' vs '{version}'")
+        raise VersionCheckError(f"Pipfile has a different python version: '{pipfile_python_version}' vs '{version}'")
 
 
-def test_poetry_matches(file: os.PathLike, version: str):
+def check_poetry_matches(file: pathlib.PurePath | bytes | str, version: str):
     data = toml.load(file)
 
-    our_version = data.get("tool", dict()).get("poetry", dict()).get("dependencies", dict()).get("python")
+    our_version = data.get("tool", {}).get("poetry", {}).get("dependencies", {}).get("python")
     if not our_version or our_version == "*":
         # No poetry/python version specified, so nothing to check
         return
@@ -92,7 +73,9 @@ def test_poetry_matches(file: os.PathLike, version: str):
     our_version = ".".join(our_version.split(".")[:2])
 
     if our_version != version:
-        raise Exception(f"In {file} poetry defines a different python version: '{our_version_orig}' vs '{version}'")
+        raise VersionCheckError(
+            f"In {file} poetry defines a different python version: '{our_version_orig}' vs '{version}'"
+        )
 
 
 def load_gitlabyaml(gitlab_yml_path: str):
@@ -108,24 +91,28 @@ def load_gitlabyaml(gitlab_yml_path: str):
         return yaml.load(gitlab_yml, Loader=loader)  # nosec: B506 we're using SafeLoader
 
 
-def main(files: list[str]):
+def process_files(files: list[str]):
     gitlab_variables = load_gitlabyaml(".gitlab-ci.yml")["variables"]
 
     gitlab_python_version = gitlab_variables["PYTHON_VERSION"].strip()
 
     for f in files:
         if f == "Pipfile":
-            test_pipfile_matches(gitlab_python_version)
+            check_pipfile_matches(gitlab_python_version)
         elif f == "pyproject.toml":
-            test_poetry_matches(f, gitlab_python_version)
+            check_poetry_matches(f, gitlab_python_version)
         elif f.startswith("Dockerfile"):
             for py_version in python_version_from_dockerfile(f):
                 if py_version != gitlab_python_version:
-                    raise Exception(
+                    raise VersionCheckError(
                         f"Gitlab-ci and {f} have different python versions: '{gitlab_python_version}' vs"
                         f" '{py_version}'"
                     )
 
 
+def main():
+    typer.run(process_files)
+
+
 if __name__ == "__main__":
-    typer.run(main)
+    main()
