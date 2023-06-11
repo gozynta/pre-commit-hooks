@@ -1,4 +1,25 @@
 {
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
+  },
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
   "editor.codeActionsOnSave": {
     "source.organizeImports": true
   },
@@ -6,12 +27,34 @@
     119
   ],
   "files.associations": {
+    "*.cfg": "ini",
+    "*.njk": "jinja-html",
     ".coveragerc": "ini"
   },
+  "files.readonlyInclude": {
+    ".venv/**": true
+  },
+  "markdown.copyFiles.destination": {
+    "/*": "docs/images/"
+  },
+  "python.analysis.typeCheckingMode": "basic",
   "python.envFile": "${workspaceFolder}/.vscode/env",
   "python.formatting.provider": "black",
   "python.linting.flake8Enabled": true,
   "python.pythonPath": ".venv/bin/python",
   "python.testing.pytestEnabled": true,
-  "python.workspaceSymbols.enabled": true
+  "shellformat.effectLanguages": [
+    "shellscript",
+    "dockerfile",
+    "dotenv",
+    "hosts",
+    "jvmoptions",
+    "ignore",
+    "gitignore",
+    "properties",
+    "spring-boot-properties",
+    "azcli",
+    "bats"
+  ],
+  "shellformat.flag": "-bn -ci"
 }

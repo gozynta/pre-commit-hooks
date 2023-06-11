@@ -85,7 +85,7 @@ poetry lock
         `git push -u origin main`
 2. Rename pysrc/fizzbuzz.py to suit your project and start coding/testing
 3. Consider adding poetry.lock to the .gitignore (IE: if you're building a shared library)
-4. Create symlink to one of the Dockerfiles (Ex: `ln -s Dockerfile.alpine Dockerfile`)
+4. Create symlink to one of the Dockerfiles (Eg: `ln -s Dockerfile.debian Dockerfile`)
 5. Update this file
 6. Later, when there are updates to this project you can pull changes from the `boilerplate` remote to get the updates.
 
