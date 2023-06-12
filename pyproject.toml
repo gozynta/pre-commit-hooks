@@ -22,14 +22,11 @@ pythonpath = [
 
 [tool.poetry]
 name = "pre-commit-hooks"
-version = "1.0.0"
+version = "1.0.1"
 description = ""
 authors = ["Gozynta <support@gozynta.com>"]
-license = "Proprietary"
+license = "BSD-3-Clause"
 readme = "README.md"
-classifiers = [
-    "Private :: Do Not Upload"
-]
 packages = [{include = "gozynta_pc_hooks", from="pysrc"}]
 include = ["LICENSE"]
 
